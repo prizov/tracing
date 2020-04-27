@@ -25,7 +25,9 @@ func (JaegerTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	ext.HTTPMethod.Set(span, r.Method)
 	span.Tracer().Inject(span.Context(), opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(r.Header))
 	res, err :=  http.DefaultTransport.RoundTrip(r)
-	span.SetTag("http.status.code", res.StatusCode)
+	if err == nil {
+		span.SetTag("http.status.code", res.StatusCode)
+	}
 	span.Finish()
 	return res, err
 }
