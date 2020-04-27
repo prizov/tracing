@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func initTracer(serviceName string) (opentracing.Tracer, io.Closer) {
+func InitTracer(serviceName string) (opentracing.Tracer, io.Closer) {
 	cfg := &config.Configuration{
 		ServiceName: serviceName,
 		Sampler: &config.SamplerConfig{
@@ -16,7 +16,7 @@ func initTracer(serviceName string) (opentracing.Tracer, io.Closer) {
 			Param: 1,
 		},
 		Reporter: &config.ReporterConfig{
-			LogSpans: true,
+			LogSpans: false,
 		},
 	}
 	tracer, closer, err := cfg.NewTracer(config.Logger(jaeger.StdLogger))
